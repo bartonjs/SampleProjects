@@ -1,0 +1,132 @@
+﻿<Page
+    x:Class="CryptRunner.DoEverythingPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CryptRunner"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ScrollViewer HorizontalScrollMode="Disabled" VerticalScrollMode="Auto">
+        <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="8,32,8,0">
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Back" Click="Button_Click" Margin="0,0,8,0" />
+                <TextBlock Text="Random Stuff" Style="{StaticResource TitleTextBlockStyle}"/>
+            </StackPanel>
+            <AppBarSeparator  />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="AES-CBC" />
+                <TextBlock x:Name="AesCbcOut" HorizontalAlignment="Right" Text="AesCbcOut" />
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="ECDSA" />
+                <TextBlock x:Name="ECDsaOut" HorizontalAlignment="Right" Text="ECDsaOut" />
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="RSA-Encrypt-PKCS#1" />
+                <TextBlock x:Name="RsaEncryptPkcs1Out" HorizontalAlignment="Right" Text="RsaEncryptPkcs1Out" />
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="RSA-OAEP-SHA1" />
+                <TextBlock x:Name="RsaOaepSha1Out" HorizontalAlignment="Right" Text="RsaOaepSha1Out" />
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="RSA-OAEP-SHA2-256" />
+                <TextBlock x:Name="RsaOaepSha256Out" HorizontalAlignment="Right" Text="RsaOaepSha256Out" />
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="RSA-Sign-PKCS#1" />
+                <TextBlock x:Name="RsaSignPkcs1Out" HorizontalAlignment="Right" Text="RsaSignPkcs1Out" />
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="RSA-PSS" />
+                <TextBlock x:Name="RsaPssOut" HorizontalAlignment="Right" Text="RsaEncryptPkcs1Out" />
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="3DES-CBC" />
+                <TextBlock x:Name="TripleDesCbcOut" HorizontalAlignment="Right" Text="TripleDesCbcOut" />
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="X509-RSA-Cer" />
+                <TextBlock x:Name="X509RsaCerOut" HorizontalAlignment="Right" Text="X509RsaCerOut" />
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="X509-RSA-PFX" />
+                <TextBlock x:Name="X509RsaPfxOut" HorizontalAlignment="Right" Text="X509RsaPfxOut" />
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="X509-ECDSA-CER" />
+                <TextBlock x:Name="X509ECDsaCerOut" HorizontalAlignment="Right" Text="X509ECDsaCerOut" />
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="X509-ECDSA-PFX" />
+                <TextBlock x:Name="X509ECDsaPfxOut" HorizontalAlignment="Right" Text="X509ECDsaPfxOut" />
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="X509Store" />
+                <TextBlock x:Name="X509StoreOut" HorizontalAlignment="Right" Text="X509StoreOut" />
+            </Grid>
+            <AppBarSeparator  />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Button Content="Go" Click="DoStuff_Click" />
+                <ProgressRing x:Name="WorkingRing" HorizontalAlignment="Right" />
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

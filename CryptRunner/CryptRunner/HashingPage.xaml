@@ -1,0 +1,25 @@
+﻿<Page
+    x:Class="CryptRunner.HashingPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CryptRunner"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ScrollViewer HorizontalScrollMode="Disabled" VerticalScrollMode="Auto">
+        <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="8,32,8,0">
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Back" Click="Button_Click" Margin="0,0,8,0" />
+                <TextBlock Text="Hashing" Style="{StaticResource TitleTextBlockStyle}"/>
+            </StackPanel>
+            <AppBarSeparator />
+            <TextBox x:Name="MD5Output" IsReadOnly="True" TextWrapping="Wrap" FontFamily="Courier New" Header="MD5" />
+            <TextBox x:Name="SHA1Output" IsReadOnly="True" TextWrapping="Wrap" FontFamily="Courier New" Header="SHA-1" />
+            <TextBox x:Name="SHA256Output" IsReadOnly="True" TextWrapping="Wrap" FontFamily="Courier New" Header="SHA-2-256" />
+            <TextBox x:Name="SHA384Output" IsReadOnly="True" TextWrapping="Wrap" FontFamily="Courier New" Header="SHA-2-384" />
+            <TextBox x:Name="SHA512Output" IsReadOnly="True" TextWrapping="Wrap" FontFamily="Courier New" Header="SHA-2-512" />
+            <TextBox x:Name="ContentText"  AcceptsReturn="True" TextChanged="ContentText_TextChanged" TextWrapping="Wrap" Header="Hashed Input"/>
+        </StackPanel>
+    </ScrollViewer>
+</Page>
