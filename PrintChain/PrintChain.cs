@@ -159,6 +159,7 @@ namespace PrintChain
                     Console.WriteLine(" -verifytime     VerificationTime, any parsable DateTime (local time)");
                     Console.WriteLine(" -extracert      Path to a cert to add to the resolver chain (multiple allowed)");
                     Console.WriteLine(" -verifyflag     X509VerificationFlag to add to the policy (multiple allowed)");
+                    Console.WriteLine(" -trace          Show system tracing during the chain build");
                     Console.WriteLine();
 
                     return;
