@@ -1,13 +1,17 @@
 using System;
+using System.Collections.Concurrent;
+using System.Diagnostics.Tracing;
 using System.IO;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
-namespace AddStoreDemo
+namespace PrintChain
 {
-    class Program
+    internal static class Program
     {
+        private static ConsoleEventListener s_eventListener;
+
         private static bool TryReadNext(string[] args, ref int i, out string read)
         {
             if (i >= args.Length - 1)
@@ -99,6 +103,9 @@ namespace AddStoreDemo
                         chain.ChainPolicy.VerificationFlags |= flag;
                         break;
                     }
+                    case "-trace":
+                        s_eventListener ??= new ConsoleEventListener();
+                        break;
                     case "-?":
                     case "/?":
                     case "-h":
@@ -165,6 +172,11 @@ namespace AddStoreDemo
 
                     bool valid = chain.Build(cert);
 
+                    if (s_eventListener != null)
+                    {
+                        Console.WriteLine();
+                    }
+
                     if (valid)
                     {
                         Console.ForegroundColor = ConsoleColor.DarkGreen;
@@ -212,6 +224,61 @@ namespace AddStoreDemo
 
             GC.Collect();
             GC.WaitForPendingFinalizers();
+        }
+
+        private sealed class ConsoleEventListener : EventListener
+        {
+            private static readonly ConcurrentDictionary<(Guid, string), DateTime> s_startTimes = new ConcurrentDictionary<(Guid, string), DateTime>();
+
+            protected override void OnEventSourceCreated(EventSource eventSource)
+            {
+                if (eventSource.Name.Equals("System.Security.Cryptography.X509Certificates.X509Chain.OpenSsl"))
+                {
+                    EnableEvents(eventSource, EventLevel.Verbose);
+                }
+            }
+
+            protected override void OnEventWritten(EventWrittenEventArgs eventData)
+            {
+                string message = eventData.Message;
+                string padding = null;
+                string suffix = null;
+                string activitySegment = null;
+
+                if (eventData.EventName.EndsWith("Start"))
+                {
+                    var cacheKey = (eventData.ActivityId, eventData.EventName[0..^5]);
+                    var v2 = eventData.TimeStamp;
+                    s_startTimes.AddOrUpdate(cacheKey, eventData.TimeStamp, (k, v1) => v1 > v2 ? v1 : v2);
+                }
+                else if (eventData.EventName.EndsWith("Stop"))
+                {
+                    var cacheKey = (eventData.ActivityId, eventData.EventName[0..^4]);
+
+                    if (s_startTimes.TryRemove(cacheKey, out DateTime startTime))
+                    {
+                        double duration = (eventData.TimeStamp - startTime).TotalMilliseconds;
+                        suffix = $" - Duration {duration:N3}ms";
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(message))
+                {
+                    padding = " - ";
+
+                    if (eventData.Payload?.Count > 0)
+                    {
+                        message = string.Format(message, System.Linq.Enumerable.ToArray(eventData.Payload));
+                    }
+                }
+
+                if (eventData.ActivityId != Guid.Empty)
+                {
+                    activitySegment = $" ({eventData.ActivityId})";
+                }
+
+                Console.WriteLine($"{eventData.TimeStamp:yyyy-MM-ddTHH:mm:ss.fffZ}{activitySegment}: {eventData.EventName}{padding}{message}{suffix}");
+            }
         }
     }
 }
