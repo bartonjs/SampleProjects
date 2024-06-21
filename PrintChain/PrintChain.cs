@@ -36,6 +36,9 @@ namespace PrintChain
             string certPath = null;
             string certPwd = null;
             string modeString = null;
+#if NET
+            string trustModeString = null;
+#endif
             string verifyTime = null;
 
             for (int i = 0; i < args.Length; i++)
@@ -92,6 +95,38 @@ namespace PrintChain
 
                         break;
                     }
+#if NET
+                    case "-trustmode":
+                    {
+                        X509ChainTrustMode trustMode;
+
+                        if (trustModeString != null) return false;
+                        if (!TryReadNext(args, ref i, out trustModeString)) return false;
+                        if (!Enum.TryParse(trustModeString, true, out trustMode)) return false;
+
+                        chain.ChainPolicy.TrustMode = trustMode;
+                        break;
+                    }
+                    case "-trust":
+                    {
+                        string trustPath;
+
+                        if (!TryReadNext(args, ref i, out trustPath)) return false;
+
+                        try
+                        {
+                            X509Certificate2 trustCert = new X509Certificate2(trustPath);
+                            chain.ChainPolicy.CustomTrustStore.Add(trustCert);
+                        }
+                        catch (CryptographicException e)
+                        {
+                            Console.WriteLine(e.Message);
+                            return false;
+                        }
+
+                        break;
+                    }
+#endif
                     case "-verifyflag":
                     {
                         string flagString;
@@ -158,6 +193,10 @@ namespace PrintChain
                     Console.WriteLine(" -mode           X509RevocationMode (Online|Offline|NoCheck)");
                     Console.WriteLine(" -verifytime     VerificationTime, any parsable DateTime (local time)");
                     Console.WriteLine(" -extracert      Path to a cert to add to the resolver chain (multiple allowed)");
+#if NET
+                    Console.WriteLine(" -trustmode      X509ChainTrustMode (System|CustomRootTrust)");
+                    Console.WriteLine(" -trust          Path to a cert to add to the custom trust store (multiple allowed)");
+#endif
                     Console.WriteLine(" -verifyflag     X509VerificationFlag to add to the policy (multiple allowed)");
                     Console.WriteLine(" -trace          Show system tracing during the chain build");
                     Console.WriteLine();
